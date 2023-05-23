@@ -21,10 +21,7 @@ Home Assistant Lovelace custom cards to display a gauge with one or two entities
 | double_tap_action | object  | **Optional** | Action to take on double tap                | `none`              |      |
 
 ## configuration example
-
-
-
-
+```
 
 ```
 [license-shield]: https://img.shields.io/github/license/Sojjocola/sojjo-temperature-card.svg?style=for-the-badge
