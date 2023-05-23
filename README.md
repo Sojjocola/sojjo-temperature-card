@@ -27,5 +27,7 @@ Home Assistant Lovelace custom cards to display a gauge with one or two entities
 
 
 ```
-
+[license-shield]: https://img.shields.io/github/license/Sojjocola/sojjo-temperature-card.svg?style=for-the-badge
+[releases-shield]: https://img.shields.io/github/release/Sojjocola/sojjo-temperature-card.svg?style=for-the-badge
+[releases]: https://github.com/Sojjocola/sojjo-temperature-card/releases
 
