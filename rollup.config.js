@@ -39,7 +39,7 @@ const plugins = [
 
 export default [
   {
-    input: 'src/boilerplate-card.ts',
+    input: 'src/sojjotemperature-card.ts',
     output: {
       dir: 'dist',
       format: 'es',

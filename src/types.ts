@@ -1,14 +1,16 @@
 import { ActionConfig, LovelaceCard, LovelaceCardConfig, LovelaceCardEditor } from 'custom-card-helpers';
+import { SojjoTemperatureGauge } from './sojjotemperature-card';
 
 declare global {
   interface HTMLElementTagNameMap {
-    'boilerplate-card-editor': LovelaceCardEditor;
+    'sojjotemperature-card-editor': LovelaceCardEditor;
     'hui-error-card': LovelaceCard;
+    'sojjo-temperature-gauge': SojjoTemperatureGauge;
   }
 }
 
 // TODO Add your configuration elements here for type-checking
-export interface BoilerplateCardConfig extends LovelaceCardConfig {
+export interface SojjoTemperatureCardConfig extends LovelaceCardConfig {
   type: string;
   name?: string;
   show_warning?: boolean;
@@ -18,4 +20,18 @@ export interface BoilerplateCardConfig extends LovelaceCardConfig {
   tap_action?: ActionConfig;
   hold_action?: ActionConfig;
   double_tap_action?: ActionConfig;
+  with_second_entity: boolean;
+  second_entity?: string;
+  resolution?: number;
+  gaugeColor?: GaugeColor;
+  firstUnit?: string;
+  secondUnit?: string;
+  firstIcon?: string;
+  secondIcon?: string;
+}
+
+export interface GaugeColor {
+  green: number;
+  yellow: number;
+  red: number;
 }

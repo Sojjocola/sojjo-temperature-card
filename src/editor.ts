@@ -3,18 +3,18 @@ import { LitElement, html, TemplateResult, css, CSSResultGroup } from 'lit';
 import { HomeAssistant, fireEvent, LovelaceCardEditor } from 'custom-card-helpers';
 
 import { ScopedRegistryHost } from '@lit-labs/scoped-registry-mixin';
-import { BoilerplateCardConfig } from './types';
+import { SojjoTemperatureCardConfig } from './types';
 import { customElement, property, state } from 'lit/decorators';
 import { formfieldDefinition } from '../elements/formfield';
 import { selectDefinition } from '../elements/select';
 import { switchDefinition } from '../elements/switch';
 import { textfieldDefinition } from '../elements/textfield';
 
-@customElement('boilerplate-card-editor')
-export class BoilerplateCardEditor extends ScopedRegistryHost(LitElement) implements LovelaceCardEditor {
+@customElement('sojjotemperature-card-editor')
+export class SojjoTemperatureCardEditor extends ScopedRegistryHost(LitElement) implements LovelaceCardEditor {
   @property({ attribute: false }) public hass?: HomeAssistant;
 
-  @state() private _config?: BoilerplateCardConfig;
+  @state() private _config?: SojjoTemperatureCardConfig;
 
   @state() private _helpers?: any;
 
@@ -27,7 +27,7 @@ export class BoilerplateCardEditor extends ScopedRegistryHost(LitElement) implem
     ...formfieldDefinition,
   };
 
-  public setConfig(config: BoilerplateCardConfig): void {
+  public setConfig(config: SojjoTemperatureCardConfig): void {
     this._config = config;
 
     this.loadCardHelpers();
@@ -49,12 +49,39 @@ export class BoilerplateCardEditor extends ScopedRegistryHost(LitElement) implem
     return this._config?.entity || '';
   }
 
-  get _show_warning(): boolean {
-    return this._config?.show_warning || false;
+  get _second_entity(): string {
+    return this._config?.second_entity || '';
   }
 
-  get _show_error(): boolean {
-    return this._config?.show_error || false;
+  get _with_second_entity(): boolean {
+    return this._config?.with_second_entity || false;
+  }
+
+  get _renderingHtmlWithSecondEntity() {
+    if (!this.hass || !this._helpers) {
+      return html``;
+    }
+    // You can restrict on domain type
+    const entities = Object.keys(this.hass.states);
+    if (this._with_second_entity) {
+      return html`
+        <mwc-select
+          naturalMenuWidth
+          fixedMenuPosition
+          label="Second Entity"
+          .configValue=${'second_entity'}
+          .value=${this._second_entity}
+          @selected=${this._valueChanged}
+          @closed=${(ev) => ev.stopPropagation()}
+        >
+          ${entities.map((second_entity) => {
+            return html`<mwc-list-item .value=${second_entity}>${second_entity}</mwc-list-item>`;
+          })}
+        </mwc-select>
+      `;
+    } else {
+      return html``;
+    }
   }
 
   protected render(): TemplateResult | void {
@@ -66,6 +93,13 @@ export class BoilerplateCardEditor extends ScopedRegistryHost(LitElement) implem
     const entities = Object.keys(this.hass.states);
 
     return html`
+
+      <mwc-textfield
+        label="Name (Optional)"
+        .value=${this._name}
+        .configValue=${'name'}
+        @input=${this._valueChanged}
+      ></mwc-textfield>
       <mwc-select
         naturalMenuWidth
         fixedMenuPosition
@@ -79,26 +113,14 @@ export class BoilerplateCardEditor extends ScopedRegistryHost(LitElement) implem
           return html`<mwc-list-item .value=${entity}>${entity}</mwc-list-item>`;
         })}
       </mwc-select>
-      <mwc-textfield
-        label="Name (Optional)"
-        .value=${this._name}
-        .configValue=${'name'}
-        @input=${this._valueChanged}
-      ></mwc-textfield>
-      <mwc-formfield .label=${`Toggle warning ${this._show_warning ? 'off' : 'on'}`}>
+      <mwc-formfield .label=${`With Second Entity ${this._with_second_entity ? 'off' : 'on'}`}>
         <mwc-switch
-          .checked=${this._show_warning !== false}
-          .configValue=${'show_warning'}
+          .checked=${this._with_second_entity !== false}
+          .configValue=${'with_second_entity'}
           @change=${this._valueChanged}
         ></mwc-switch>
       </mwc-formfield>
-      <mwc-formfield .label=${`Toggle error ${this._show_error ? 'off' : 'on'}`}>
-        <mwc-switch
-          .checked=${this._show_error !== false}
-          .configValue=${'show_error'}
-          @change=${this._valueChanged}
-        ></mwc-switch>
-      </mwc-formfield>
+      ${this._renderingHtmlWithSecondEntity}
     `;
   }
 
