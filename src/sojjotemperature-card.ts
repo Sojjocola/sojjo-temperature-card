@@ -198,13 +198,13 @@ export class SojjoTemperatureCard extends LitElement {
         text-align: center;
       }
       .temperature .value {
-        font-size: 28px;
+        font-size: 2em;
         margin-right: 4px;
         padding-top: 3px;
       }
       .temperature .unit {
         color: var(--secondary-text-color);
-        font-size: 18px;
+        font-size: 1.5em;
       }
       .temperature ha-icon {
         color: orange;
@@ -222,13 +222,13 @@ export class SojjoTemperatureCard extends LitElement {
         text-align: center;
       }
       .humidity .value {
-        font-size: 20px;
+        font-size: 1.5em;
         margin-right: 4px;
         padding-top: 3px;
       }
       .humidity .unit {
         color: var(--secondary-text-color);
-        font-size: 14px;
+        font-size: 1.1em;
       }
       .humidity ha-icon {
         color: #2ea5cd;
@@ -237,7 +237,7 @@ export class SojjoTemperatureCard extends LitElement {
         color: var(--secondary-text-color);
         line-height: 40px;
         font-weight: 500;
-        font-size: 18px;
+        font-size: 1.4em;
         overflow-x: hidden;
         overflow-y: hidden;
         white-space: nowrap;
@@ -249,6 +249,33 @@ export class SojjoTemperatureCard extends LitElement {
         z-index: 49;
         width: 100%;
         top: 0px;
+      }
+
+      @media (max-width: 640px) {
+
+        .temperature .value {
+          font-size: 1.4em;
+          padding-top: 1px;
+          padding-left: -1px;
+        }
+        .temperature .unit {
+          font-size: 1.1em;
+        }
+        .humidity .value {
+          font-size: 1.1em;
+          padding-top: 1px;
+          padding-left: -1px;
+        }
+        .humidity .unit {
+          font-size: 0.8em;
+        }
+        .title {
+          font-size: 1.2em;
+          line-height: 25px;
+        }
+        .humidity-empty {
+          padding: 6px;
+        }
       }
     `;
   }
