@@ -49,12 +49,36 @@ export class SojjoTemperatureCardEditor extends ScopedRegistryHost(LitElement) i
     return this._config?.entity || '';
   }
 
+  get _firstIcon(): string {
+    return this._config?.firstIcon || 'mdi:thermometer';
+  }
+
+  get _firstUnit(): string {
+    return this._config?.firstUnit || '°C';
+  }
+
+  get _firstIconColor(): string {
+    return this._config?.firstIconColor || 'orange';
+  }
+
   get _second_entity(): string {
     return this._config?.second_entity || '';
   }
 
   get _with_second_entity(): boolean {
     return this._config?.with_second_entity || false;
+  }
+
+  get _secondIcon(): string {
+    return this._config?.secondIcon || 'mdi:water-percent';
+  }
+
+  get _secondUnit(): string {
+    return this._config?.secondUnit || '%';
+  }
+
+  get _secondIconColor(): string {
+    return this._config?.secondIconColor || '#2ea5cd';
   }
 
   get _renderingHtmlWithSecondEntity() {
@@ -95,7 +119,7 @@ export class SojjoTemperatureCardEditor extends ScopedRegistryHost(LitElement) i
     return html`
 
       <mwc-textfield
-        label="Name (Optional)"
+        label="Name (Required)"
         .value=${this._name}
         .configValue=${'name'}
         @input=${this._valueChanged}

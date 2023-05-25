@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { LitElement, html, TemplateResult, css, PropertyValues, CSSResultGroup, PropertyValueMap } from 'lit';
+import { LitElement, html, TemplateResult, css, PropertyValues, CSSResultGroup, PropertyValueMap, CSSResult } from 'lit';
 import { customElement, property, query, state } from 'lit/decorators';
 import {
   HomeAssistant,
@@ -46,10 +46,6 @@ export class SojjoTemperatureCard extends LitElement {
   // TODO Add any properities that should cause your element to re-render here
   // https://lit.dev/docs/components/properties/
   @property({ attribute: false }) public hass!: HomeAssistant;
-
-  public iconThermometer = 'mdi:thermometer';
-  public iconHumidity = 'mdi:water-percent';
-
   @state() private config!: SojjoTemperatureCardConfig;
 
   widthGauge?: string;
@@ -66,11 +62,12 @@ export class SojjoTemperatureCard extends LitElement {
     }
 
     this.config = {
-      name: 'SojjoTemperature',
+      firstIcon :'mdi:thermometer',
+      secondIcon: 'mdi:water-percent',
+      firstUnit: '°C',
+      secondUnit: '%',
       ...config,
     };
-
-    console.log(this.config);
   }
 
   // https://lit.dev/docs/components/lifecycle/#reactive-update-cycle-performing
@@ -98,7 +95,7 @@ export class SojjoTemperatureCard extends LitElement {
         @action=${this._handleAction}
         .actionHandler=${actionHandler({
           hasHold: hasAction(this.config.hold_action),
-          hasDoubleClick: hasAction(this.config.double_tap_action),
+          hasDoubleClick: hasAction(this.config.double_tap_action)
         })}
         tabindex="0"
       >
@@ -110,9 +107,9 @@ export class SojjoTemperatureCard extends LitElement {
         ></sojjo-temperature-gauge>
         <div class="gauge-data">
           <div class="temperature">
-            <ha-icon .icon=${this.iconThermometer}></ha-icon>
+            <ha-icon .icon=${this.config?.firstIcon}></ha-icon>
             <span class="value">${this.hass.states[`${this.config?.entity}`].state.replace('.', ',')}</span
-            ><span class="unit">°C</span>
+            ><span class="unit">${this.config.firstUnit}</span>
           </div>
           ${this.renderSecondEntity()}
           <div class="title">${this.config?.name}</div>
@@ -124,9 +121,9 @@ export class SojjoTemperatureCard extends LitElement {
   private renderSecondEntity() {
     if (this.config?.with_second_entity) {
       return html` <div class="humidity">
-        <ha-icon .icon=${this.iconHumidity}></ha-icon>
+        <ha-icon .icon=${this.config?.secondIcon}></ha-icon>
         <span class="value">${this.hass.states[`${this.config?.second_entity}`].state.replace('.', ',')}</span
-        ><span class="unit"> %</span>
+        ><span class="unit"> ${this.config.secondUnit}</span>
       </div>`;
     } else {
       return html`<div class="humidity-empty"></div>`;
@@ -196,6 +193,7 @@ export class SojjoTemperatureCard extends LitElement {
         text-overflow: ellipsis;
         line-height: 28px;
         text-align: center;
+        margin-left: -3px;
       }
       .temperature .value {
         font-size: 2em;
@@ -206,9 +204,11 @@ export class SojjoTemperatureCard extends LitElement {
         color: var(--secondary-text-color);
         font-size: 1.5em;
       }
+
       .temperature ha-icon {
-        color: orange;
+        color: #ffac05;
       }
+
       .humidity-empty {
         padding: 15px;
       }
@@ -220,6 +220,7 @@ export class SojjoTemperatureCard extends LitElement {
         text-overflow: ellipsis;
         line-height: 28px;
         text-align: center;
+        margin-left: -3px;
       }
       .humidity .value {
         font-size: 1.5em;
@@ -230,9 +231,11 @@ export class SojjoTemperatureCard extends LitElement {
         color: var(--secondary-text-color);
         font-size: 1.1em;
       }
+
       .humidity ha-icon {
         color: #2ea5cd;
       }
+
       .title {
         color: var(--secondary-text-color);
         line-height: 40px;
@@ -251,6 +254,9 @@ export class SojjoTemperatureCard extends LitElement {
         top: 0px;
       }
 
+      :host {
+           --mdc-icon-size: 26px;
+        }
       @media (max-width: 640px) {
 
         .temperature .value {
@@ -275,6 +281,10 @@ export class SojjoTemperatureCard extends LitElement {
         }
         .humidity-empty {
           padding: 6px;
+        }
+
+        :host {
+           --mdc-icon-size: 20px;
         }
       }
     `;
