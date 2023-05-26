@@ -28,12 +28,15 @@ export interface SojjoTemperatureCardConfig extends LovelaceCardConfig {
   secondUnit?: string;
   firstIcon?: string;
   secondIcon?: string;
-  firstIconColor?: string;
-  secondIconColor?: string;
+  gaugeBoundary?: GaugeBoundary;
 }
 
 export interface GaugeColor {
   green: number;
   yellow: number;
   red: number;
+}
+
+export interface GaugeBoundary {
+  max: number;
 }

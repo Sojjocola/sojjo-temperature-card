@@ -66,6 +66,7 @@ export class SojjoTemperatureCard extends LitElement {
       secondIcon: 'mdi:water-percent',
       firstUnit: '°C',
       secondUnit: '%',
+      gaugeBoundary: { max: 40},
       ...config,
     };
   }
@@ -153,7 +154,7 @@ export class SojjoTemperatureCard extends LitElement {
 
   private getPercentToDisplay(value: string) {
     const decimalValue: number = +value;
-    return (decimalValue * 100) / 55;
+    return (decimalValue * 100) / (this.config?.gaugeBoundary?.max ?? 40);
   }
 
   private getColortoDisplay(value: string) {
