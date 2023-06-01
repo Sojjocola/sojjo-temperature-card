@@ -7,6 +7,7 @@ Home Assistant Lovelace custom cards to display a gauge with one or two entities
 
 
 ![all](images/sample.png)
+![all](images/sample2.png)
 
 ## Main Options
 
