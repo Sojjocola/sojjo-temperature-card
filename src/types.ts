@@ -29,6 +29,7 @@ export interface SojjoTemperatureCardConfig extends LovelaceCardConfig {
   firstIcon?: string;
   secondIcon?: string;
   gaugeBoundary?: GaugeBoundary;
+  battery_entity?: string;
 }
 
 export interface GaugeColor {

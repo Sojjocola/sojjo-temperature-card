@@ -91,6 +91,8 @@ export class SojjoTemperatureCard extends LitElement {
       return this._showError(localize('common.show_error'));
     }
 
+    const batteryValue = +(this.hass.states[`${this.config?.battery_entity}`]?.state ?? '-1');
+
     return html`
       <ha-card
         @action=${this._handleAction}
@@ -114,6 +116,9 @@ export class SojjoTemperatureCard extends LitElement {
           </div>
           ${this.renderSecondEntity()}
           <div class="title">${this.config?.name}</div>
+        </div>
+        <div class="battery-indicator">
+          ${this.getBatteryIndicator(batteryValue)}
         </div>
       </ha-card>
     `;
@@ -175,6 +180,38 @@ export class SojjoTemperatureCard extends LitElement {
       }
     }
     return '#1C81E1';
+  }
+
+  private getBatteryIndicator(value: number) {
+
+    let iconRef = "mdi:battery-unknown";
+    if(value == -1){
+      return html``;
+    } else if(value < 10) {
+      iconRef = "mdi:battery-10";
+    } else if(value >=10 && value < 20) {
+      iconRef = "mdi:battery-20";
+    } else if(value >=20 && value < 30) {
+      iconRef = "mdi:battery-30";
+    }else if(value >=30 && value < 40) {
+      iconRef = "mdi:battery-40";
+    }else if(value >=40 && value < 50) {
+      iconRef = "mdi:battery-50";
+    }else if(value >=50 && value < 60) {
+      iconRef = "mdi:battery-60";
+    }else if(value >=60 && value < 70) {
+      iconRef = "mdi:battery-70";
+    }else if(value >=70 && value < 80) {
+      iconRef = "mdi:battery-80";
+    }else if(value >=80 && value < 90) {
+      iconRef = "mdi:battery-90";
+    }else if(value >= 90){
+      iconRef = "mdi:battery";
+    }
+
+    return html`
+      <ha-icon .icon=${iconRef}></ha-icon>
+    `;
   }
 
   // https://lit.dev/docs/components/styles/
@@ -254,6 +291,13 @@ export class SojjoTemperatureCard extends LitElement {
         width: 100%;
         top: 0px;
       }
+      .battery-indicator {
+        position: absolute;
+        top:5px;
+        right:5px;
+        opacity: 0.4;
+        --mdc-icon-size:20px;
+      }
 
       :host {
            --mdc-icon-size: 26px;
@@ -283,7 +327,9 @@ export class SojjoTemperatureCard extends LitElement {
         .humidity-empty {
           padding: 6px;
         }
-
+        .battery-indicator {
+          --mdc-icon-size:18px;
+        }
         :host {
            --mdc-icon-size: 20px;
         }
