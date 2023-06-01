@@ -29,6 +29,7 @@ Home Assistant Lovelace custom cards to display a gauge with one or two entities
 | tap_action        | object  | **Optional** | Action to take on tap                                | `action: more-info` |
 | hold_action       | object  | **Optional** | Action to take on hold                               | `none`              |
 | double_tap_action | object  | **Optional** | Action to take on double tap                         | `none`              |
+| battery_entity | object  | **Optional** | Home Assistant entity ID for displaying battery status                          | `none`              |
 
 ## GaugeColor
 
