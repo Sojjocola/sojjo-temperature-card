@@ -76,6 +76,7 @@ gaugeColor:
   red: 28
 gaugeBoundary:
   max: 35
+battery_entity: sensor.0x00158d00091c8028_battery
 ```
 
 ##
